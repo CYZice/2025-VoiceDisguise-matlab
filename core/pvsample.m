@@ -28,20 +28,17 @@ if hop == 0
   hop = N/2;
 end
 
-% Empty output array
+
 c = zeros(rows, length(t));
 
-% Expected phase advance in each bin
+
 dphi = zeros(1,N/2+1);
 dphi(2:(1 + N/2)) = (2*pi*hop)./(N./(1:(N/2)));
 
-% Phase accumulator
-% Preset to phase of first frame for perfect reconstruction
-% in case of 1:1 time scaling
+
 ph = angle(b(:,1));
 
-% Append a 'safety' column on to the end of b to avoid problems 
-% taking *exactly* the last frame (i.e. 1*b(:,cols)+0*b(:,cols+1))
+
 b = [b,zeros(rows,1)];
 
 ocol = 1;

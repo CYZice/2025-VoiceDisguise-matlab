@@ -82,13 +82,19 @@ function main()
         semitones = input('输入变调半音数（正数升调，负数降调）: ');
         
         y_pitch = pitch_shift(x_filtered, semitones, fs, ...
-                             'formant_correction', true, 'nfft', 1024);
+                             'formant_correction', true, 'nfft', 1024,'method','cepstral','beta',1.15);
+        spectrum_analysis(y_pitch, fs, '变调后信号分析');
+
         
         %% 5. 时间拉伸
         fprintf('\n=== 时间拉伸 ===\n');
         time_ratio = input('输入时间拉伸比例（>1变慢，<1变快）: ');
         
         y_time = time_stretch(x_filtered, time_ratio, fs);
+        
+        spectrum_analysis(y_time, fs, '变速后信号分析');
+
+
         
         %% 6. 结果显示与播放
         fprintf('\n=== 结果显示 ===\n');
