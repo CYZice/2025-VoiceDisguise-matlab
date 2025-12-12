@@ -1,0 +1,724 @@
+\documentclass[12pt,a4paper]{article}
+
+% 中文支持
+\usepackage{ctex}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{titlesec}  % 用于设置标题格式
+\usepackage{tocloft}   % 用于设置目录格式
+\usepackage{amsmath}   % 数学公式支持
+\usepackage{amsfonts}  % 数学字体支持
+\usepackage{enumerate}
+\usepackage{subcaption}
+\usepackage{placeins}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{ulem}
+% 关于图片 graphicx
+ % 如果图片没有指定后缀, 依次按下列顺序搜索
+ % 设置图表搜索路径, 可以给图表文件夹取如下名字
+\graphicspath{{figures/}{figure/}{pictures/}%
+  {picture/}{pic/}{pics/}{image/}{images/}}
+
+% 在导言区添加以下包和设置
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{inconsolata}
+
+% 定义MATLAB代码样式
+\lstdefinestyle{matlabstyle}{
+    language=Matlab,
+    backgroundcolor=\color{gray!5},
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{blue},
+    commentstyle=\color{green!50!black},
+    stringstyle=\color{orange},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    breaklines=true,
+    frame=single,
+    captionpos=b
+}
+
+% 定义文件路径（根据实际情况调整）
+\newcommand{\codefolder}{./code}
+
+% 页面设置
+\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+\setlength{\headheight}{15pt}  % 设置页眉高度
+
+% 设置字体 (ctex包已经定义了\heiti和\fangsong，无需重复定义)
+
+% 字号设置
+\newcommand{\chuhao}{\fontsize{42pt}{\baselineskip}\selectfont}      % 初号
+\newcommand{\yihao}{\fontsize{26pt}{\baselineskip}\selectfont}       % 一号
+\newcommand{\xiaoyi}{\fontsize{24pt}{\baselineskip}\selectfont}      % 小一
+\newcommand{\erhao}{\fontsize{22pt}{\baselineskip}\selectfont}       % 二号
+\newcommand{\xiaoer}{\fontsize{18pt}{\baselineskip}\selectfont}      % 小二
+\newcommand{\sanhao}{\fontsize{16pt}{\baselineskip}\selectfont}      % 三号
+\newcommand{\xiaosan}{\fontsize{15pt}{\baselineskip}\selectfont}     % 小三
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}       % 四号
+\newcommand{\xiaosi}{\fontsize{12pt}{\baselineskip}\selectfont}      % 小四
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}     % 五号
+\newcommand{\dawu}{\fontsize{20pt}{\baselineskip}\selectfont}        % 20pt大小
+
+\begin{document}
+
+% 封面
+\begin{titlepage}
+    \begin{center}
+        \vspace*{2cm}
+        
+        % 学院和课程名称 - 黑体小一
+        {\heiti\xiaoyi 华中科技大学光学与电子信息学院}
+        
+        \vspace{0.3cm}
+        
+        {\heiti\xiaoyi 《信号与线性系统》课程}
+        
+        \vspace{1.5cm}
+        
+        % 报告标题 - 黑体一号
+        {\heiti\yihao 工程设计问题设计报告}
+        
+        \vspace{2cm}
+        
+        % 题目 - 黑体+仿宋_GB2312 20pt
+        {\dawu% 
+  {\heiti 题目：}% % 黑体部分
+  \fangsong% % 切换回仿宋
+  \underline{\makebox[10cm][c]{语音伪装器设计}}% % 下划线部分
+}
+        
+        \vspace{4cm}
+        
+        % 表格信息 - 仿宋_GB2312 四号
+        \begin{spacing}{1.8}
+        {\fangsong\sihao
+        \begin{tabular}{ll}
+            姓\hspace{1em}名： & \underline{\makebox[8cm][c]{陈昀泽}} \\
+            学\hspace{1em}号： & \underline{\makebox[8cm][c]{U202413823}} \\
+            时\hspace{1em}间： & \underline{\makebox[8cm][c]{2025.12.1}} \\
+            指导教师： & \underline{\makebox[8cm][c]{程孟凡}} \\
+        \end{tabular}
+        }
+        \end{spacing}
+        
+    \end{center}
+\end{titlepage}
+
+% 封面后分页（第一部分结束：封面无页码）
+\newpage
+
+% 第二部分：前置部分（摘要、目录）- 使用罗马数字页码
+\pagenumbering{roman}  % 切换到罗马数字页码（I, II, III...）
+\setcounter{page}{1}    % 从I开始编号
+
+% 设置页眉页脚（目录页使用）
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[C]{华中科技大学光学与电子信息学院}
+\fancyfoot[C]{\thepage}
+
+% 目录设置
+% 确保目录标题为中文
+\renewcommand{\contentsname}{目录}
+% 目录标题样式：与一级标题相同但无编号（黑体三号居中）
+\renewcommand{\cfttoctitlefont}{\heiti\sanhao\centering}
+\renewcommand{\cftaftertoctitle}{\vspace{3pt}}
+
+% 目录格式设置
+\renewcommand{\cftsecfont}{\fangsong\xiaosi}      % 一级标题：仿宋小四
+\renewcommand{\cftsubsecfont}{\fangsong\xiaosi}   % 二级标题：仿宋小四
+\renewcommand{\cftsubsubsecfont}{\fangsong\xiaosi} % 三级标题：仿宋小四
+
+\renewcommand{\cftsecpagefont}{\fangsong\xiaosi}      % 一级标题页码字体
+\renewcommand{\cftsubsecpagefont}{\fangsong\xiaosi} % 二级标题页码字体
+\renewcommand{\cftsubsubsecpagefont}{\fangsong\xiaosi} % 三级标题页码字体
+
+% 启用所有级别的点线
+\renewcommand{\cftdot}{.}  % 点线样式
+\renewcommand{\cftdotsep}{1.5}  % 点线间距（点之间的间距）
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}  % 一级标题点线
+\renewcommand{\cftsubsecleader}{\cftdotfill{\cftdotsep}}  % 二级标题点线
+\renewcommand{\cftsubsubsecleader}{\cftdotfill{\cftdotsep}}  % 三级标题点线
+
+% 目录间距设置
+\setlength{\cftbeforesecskip}{6pt}      % 一级标题前间距
+\setlength{\cftbeforesubsecskip}{3pt}   % 二级标题前间距
+\setlength{\cftbeforesubsubsecskip}{3pt} % 三级标题前间距
+
+% 目录缩进设置
+\setlength{\cftsecindent}{0em}      % 一级标题缩进
+\setlength{\cftsubsecindent}{1.5em} % 二级标题缩进
+\setlength{\cftsubsubsecindent}{3em} % 三级标题缩进
+
+% 目录编号和点线宽度设置
+\setlength{\cftsecnumwidth}{2em}      % 一级标题编号宽度
+\setlength{\cftsubsecnumwidth}{2.5em} % 二级标题编号宽度
+\setlength{\cftsubsubsecnumwidth}{3em} % 三级标题编号宽度
+
+% 生成目录（居中显示）
+\begin{center}
+\begin{minipage}{12cm}  % 设置目录宽度
+\tableofcontents
+\end{minipage}
+\end{center}
+
+% 目录后分页（第二部分结束：目录使用罗马数字）
+\newpage
+
+% 第三部分：正文及后续部分 - 使用阿拉伯数字页码，从1开始
+\pagenumbering{arabic}  % 切换到阿拉伯数字页码（1, 2, 3...）
+\setcounter{page}{1}     % 从1开始重新编号
+
+% 设置页眉页脚（正文页使用）
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[C]{华中科技大学光学与电子信息学院}
+\fancyfoot[C]{\thepage}
+
+% 正文开始
+% 正文字体和段落设置
+\fangsong\xiaosi  % 正文使用仿宋_GB2312 小四
+
+% 段落格式设置
+\setlength{\parindent}{2em}  % 首行缩进2字符
+\setlength{\parskip}{0pt}     % 段后间距0
+\linespread{1.25}             % 行距1.25倍
+\selectfont
+
+% 标题格式设置
+% 一级标题：黑体三号居中，编号格式：1.
+\titleformat{\section}
+    {\heiti\sanhao\centering}
+    {\thesection.}
+    {1em}
+    {}
+\titlespacing{\section}{0pt}{3pt}{3pt}
+
+% 二级标题：黑体四号左对齐，编号格式：1.1
+\titleformat{\subsection}
+    {\heiti\sihao\raggedright}
+    {\thesubsection}
+    {1em}
+    {}
+\titlespacing{\subsection}{0pt}{3pt}{3pt}
+
+% 三级标题：黑体小四左对齐，编号格式：1.1.1
+\titleformat{\subsubsection}
+    {\heiti\xiaosi\raggedright}
+    {\thesubsubsection}
+    {1em}
+    {}
+\titlespacing{\subsubsection}{0pt}{3pt}{3pt}
+
+\section*{摘要}
+本文面向隐私保护与人机交互等典型应用场景，
+设计并实现了一套能够在男声、女声与童声之间进行转换的语音变音系统。
+系统以源—滤波器模型为理论基础，采用短时傅里叶变换进行时频分析，并以相位声码器（PVOC）实现时间—音高解耦，
+在不破坏相位一致性的前提下通过重采样完成基频变换，能够改变声音的音调高低；
+在完成题目基础任务之外，为缓解仅变调时产生的“芯片人效应”，除了改变基频外，还需要改变共振峰来改变声道特性。本文实现了一个倒谱域共振峰保持算法，控制共振峰整体迁移，能够改变决定听感的声道特性。
+开发过程中结合 AI 助手开展资料检索、方案对比与参数区间设定，确定以相位声码器为基础，扩展倒谱包络伸缩为核心的实现路径。
+综合结果表明，本文方法在相同音高变换条件下引入可控参数β以实现音色迁移，在主观听感上更贴近目标性别/年龄感的音色迁移与更高的主观自然度，
+对比Matlab内置的shiftPitch，在变声自然度上显著优于shiftPitch的共振峰迭代校正算法。但在包络贴合的客观指标（如MSE、MAE）上与Matlab内置的shiftPitch仍存在明显差距。
+整体而言，本文从零复现了相位声码器，并且提出了一种倒谱域共振峰保持算法，在满足课程指标的同时，基于共振峰缩放这一扩展模块实现相对于基线更自然的音色转换，为课程场景下的从零复现与扩展研究提供了可解释、可调参的平台。
+
+
+关键词：语音伪装、相位声码器、基频变换、共振峰缩放、倒谱分析
+
+
+
+\section{问题描述}
+
+\subsection {原始话题情境}
+
+在隐私保护、安防通讯和娱乐交互等实际场景中，常需要对语音进行主动变换，以隐藏说话人的身份特征。人的声音差异主要由音调（基频$F_0$）与音色（由声道结构产生的共振峰Formants）共同决定。通过同时调整基频与共振峰分布，可在男声、女声与童声等类别之间实现听感上的转换。本工程任务遵循课程题目要求，利用短时傅里叶变换（STFT）、滤波器设计与频率映射等工具，设计一个可实时或准实时的语音伪装器，使输出在满足目标听感的同时保持自然度与可懂度，并支持慢录快放与快录慢放等功能演示。
+
+\subsection {问题扩展与定义}
+
+从“信号与线性系统”的角度，可将语音产生建模为源–滤波器（Source–Filter）模型。语音信号$s(t)$由激励源$e(t)$经代表声道的线性时变系统$h(t)$产生：
+\[
+s(t)=(e*h)(t),\qquad S(\omega)=E(\omega)H(\omega),
+\]
+其中，$E(\omega)$包含基频与谐波信息，$H(\omega)$的谱峰构成共振峰，决定音色特征。语音伪装器的目标是设计处理系统$T$（或其频域映射），使输出在基频与共振峰方面达到预期的感知变化。为统一表述，定义两类缩放参数：基频缩放系数$\alpha$与共振峰缩放系数$\beta$，分别满足
+\[
+F_0'=\alpha\,F_0,\qquad F_k'=\beta\,F_k,
+\]
+其中$\alpha=2^{\mathrm{semitones}/12}$控制升降调（$\alpha>1$升调，$\alpha<1$降调），$\beta$控制共振峰整体伸缩（$\beta>1$上移、更尖亮；$\beta<1$下移、更厚重）。因此，语音伪装可视为“频谱重塑（spectral reshaping）”问题：在保持语义内容的前提下，分别对激励谱与声道包络实施可控映射，使输出频谱特性逼近目标类别的理想结构。为达成该目标，需在短时稳态假设下将基频信息与共振峰包络信息分离并独立处理。本文采用STFT分析与相位声码器（PVOC）进行时间–音高解耦，以时间伸缩配合重采样改变基频；
+在此基础上，对频谱包络实施频率轴伸缩，实现对共振峰的调整/缩放，从而实现$\alpha$与$\beta$的解耦控制。
+
+\subsection {建模要点和评估指标}
+
+语音信号为典型非平稳过程，短时内近似平稳，故采用STFT获取时频分布，作为基频估计、共振峰检测与频谱重塑的基础。记帧索引$m$、频率索引$k$，窗函数$w[n]$与FFT点数$N$，则
+\[
+X[m,k]=\sum_{n}x[n]\,w[n-mR]\;e^{-j2\pi kn/N},
+\]
+其中$R$为帧移。基频变换可视为对激励谱的频率伸缩：设半音数为$\mathrm{semitones}$，则$\alpha=2^{\mathrm{semitones}/12}$，相当于设计音高变换使$E'(\omega)\approx E(\omega/\alpha)$；为避免直接时域拉伸带来的相位失真，采用相位声码器以保证相位一致性。共振峰变化对应于对声道频谱包络的非线性频率轴扭曲，可建模为包络变换算子$G_\beta$：
+\[
+\mathrm{Env}_{\mathrm{out}}(\omega)=\mathrm{Env}_{\mathrm{in}}(\omega/\beta),
+\]
+其参数$\beta$反映目标音色类别的共振峰整体相对位置（例如女声相较男声具有更高的共振峰中心频率）。
+实际实现可采用两类方法：倒谱分析在倒谱域通过低通升析窗（lifter）分离包络并对频率轴进行伸缩；
+LPC系统模型通过极点映射实现共振峰搬移。两者均可形成可控的“音色调节模块”，但后续评估显示，LPC系统模型的效果较差，反而会破坏共振峰的原始特性。
+综合上述两部分，整体映射实现对$E(\omega)$与$H(\omega)$的分离控制，
+使语音伪装成为可分析、可设计的频域系统工程问题。
+
+
+在评价指标方面，本文采用包络贴合度量为主：为量化共振峰调整的有效性，分别对未进行$\beta$的基线，倒谱域共振峰伸缩法（$\beta$控制）、LPC共振峰伸缩法 
+以及shiftPitch（Matlab中成熟的变调及校正函数）可视化评价，评价对象为输出包络$Env_Y$与目标包络$Env_{target}$的接近程度；分别对不同情况下的频谱进行MSE、MAE、Correlation、SD四类指标计算，评价其与原信号的贴合度、形状一致性和稳定性，反映输出信号频谱包络与原信号在关键频带内的匹配质量。
+
+
+
+
+\section{理论模型}
+\subsection{原理分析与设计思路}
+语音伪装的核心目标是在维持原始语义内容完整性的前提下，通过解耦地改变语音信号的基频与共振峰分布，从而重塑说话人的音调与音色，使听者感知到目标类别（男声、女声、童声等）的听觉特征。依据源–滤波器模型，自然语音信号可被视为“激励源—声道系统”框架下的产物：声带振动产生的准周期激励决定基频特性，声道系统的滤波作用形成反映音色的共振峰包络。基于该物理模型，语音伪装可分解为两部分的独立控制：其一，改变激励源的时间尺度与采样率以实现基频的线性伸缩；其二，对声道系统的频谱包络实施频率轴伸缩以调整共振峰的整体位置分布。
+为实现上述解耦控制，本文采用“PVOC时间尺度变换 + 重采样的音高伸缩 + 倒谱包络伸缩”的级联策略：首先，使用相位声码器（PVOC）在STFT域对时频帧进行重组，通过相位预测与解缠保证水平与垂直相位一致性，实现对时长的无失真拉伸/压缩；其次，通过重采样改变采样率，使频谱在频率轴上按$\alpha=2^{\mathrm{semitones}/12}$进行线性伸缩并将时长恢复至原始长度，从而完成音高变换；最后，在倒谱域估计平滑的对数频谱包络，对其实施频率轴伸缩（由参数$\beta$控制），构造目标包络并以对数谱比值的形式对变调后的谱进行加权，使输出的共振峰分布逼近目标类别。这一设计将复杂的非线性音色变换转化为可分离、可分析的频域重塑过程，同时避免仅变调时出现的“芯片人效应”，并为课程要求中的慢录快放/快录慢放与滤波器设计提供统一的时频分析框架。
+\subsection{数学模型}
+\begin{enumerate}[(1)]
+ \item 语音产生模型与频域表示
+在源–滤波器（Source–Filter）模型下，语音信号$s(t)$由激励源$e(t)$经声道系统$h(t)$产生：
+$$s(t)=(e*h)(t),\qquad S(\omega)=E(\omega)\,H(\omega),$$
+其中$E(\omega)$包含基频$F_0$及其谐波结构，$H(\omega)$的谱峰构成共振峰$F_k$并决定音色。为实现语音伪装，本文引入双参数缩放：
+$$F_0'=\alpha\,F_0,\qquad F_k'=\beta\,F_k,$$
+其中$\alpha=2^{\mathrm{semitones}/12}$控制升降调，$\beta$控制共振峰整体伸缩（近似声道长度归一化的效果）。
+ \item 短时傅里叶变换（STFT）与时频表示
+对输入信号$x[n]$进行分帧加窗，窗函数采用Hann窗$w[n]$，帧移为$R$，FFT点数为$N$，其STFT表示为
+$$X[m,k]=\sum_{n}x[n]\;w[n-mR]\;e^{-j2\pi kn/N},$$
+STFT矩阵为后续PVOC的时间尺度变换、基频估计与包络提取提供时频基础。
+ \item 基于相位声码器的时间尺度修改（TSM）
+设时间尺度变换因子为$Q$（$Q>1$为拉伸，$Q<1$为压缩）。PVOC通过分析相邻帧的相位差并进行相位解缠与预测，构造新的合成网格，实现相位一致的时间重排。记第$m$帧第$k$频点的分析相位为$\phi_a[m,k]$，则去除期望相位推进后的瞬时频率偏差$\Delta\omega[m,k]$用于合成相位的递推：
+$$\phi_s[m,k]=\phi_s[m-1,k]+\Delta\omega[m,k]\;\frac{R_s}{N},$$
+其中$R_s$为合成帧移，满足$R_s=Q\,R$。该过程在不改变频率成分位置的前提下实现时长的伸缩，并保持水平相位连续性。
+ \item 音高变换模型：TSM + 重采样
+设目标半音数为$\mathrm{semitones}$，音高缩放因子为
+$$\alpha=2^{\mathrm{semitones}/12}.$$
+算法策略为：先用PVOC将时长变为原来的$Q$倍（基频位置保持），再对PVOC输出执行重采样，使采样率按$\alpha$缩放并将时长恢复至原始，得到
+$$y_{\mathrm{pitch}}[n]\;\Rightarrow\;Y_{\mathrm{pitch}}(\omega)\approx X\!\left(\frac{\omega}{\alpha}\right),$$
+此时频谱各成分（含$F_0$与谐波）完成线性伸缩，实现音高变换且时长回到原始。
+ \item 共振峰调整模型：倒谱包络伸缩与比值滤波
+重采样后，共振峰将随谱整体伸缩产生偏移。为将音色调整至目标类别，本文在倒谱域估计平滑的对数频谱包络$\mathrm{Env}(\omega)$，并实施频率轴伸缩：
+$$\mathrm{Env}_{\mathrm{target}}(\omega)=\mathrm{Env}_{\mathrm{orig}}\!\left(\frac{\omega}{\beta}\right),$$
+其中$\beta>1$对应共振峰整体上移，$\beta<1$对应整体下移。令$Y(\omega)$为变调后帧的复谱，对其包络估计为$\mathrm{Env}_{Y}(\omega)$，则采用对数谱比值构造校正增益
+$$G(\omega)=\exp\Big(\mathrm{Env}_{\mathrm{target}}(\omega)-\mathrm{Env}_{Y}(\omega)\Big),$$
+并对谱进行加权得到
+$$Y_{\mathrm{adj}}(\omega)=Y(\omega)\cdot G(\omega),$$
+最后经逆变换与重叠相加（OLA）合成到时域，获得包络已按$\beta$调整的输出语音$y[n]$。该包络伸缩等价于在频率轴上对声道系统响应实施线性扭曲（VTLN式），从而实现对共振峰的显式调整/缩放。
+ 
+\end{enumerate}
+
+\section{程序设计}
+\subsection{编程思路}
+
+本系统旨在实现语音信号的变调与共振峰调整处理，其核心基于相位声码器（Phase Vocoder, PVOC）的时频分析框架，结合重采样技术实现基频调整，并通过倒谱同态方法实现共振峰包络的频率轴缩放。整体逻辑采用“先时间伸缩，后重采样，再包络缩放”的级联策略，确保基频缩放（由$\alpha$控制）与共振峰缩放（由$\beta$控制）解耦。
+
+\begin{enumerate}[(1)]
+\item 变调主流程设计
+
+
+输入音频首先经过STFT模块进行分帧加窗处理，获取其时频域表示。系统根据用户设定的目标半音变化量$n$计算音高缩放因子$\alpha=2^{n/12}$，选取时间尺度因子$Q$（工程上取$Q\approx 1/\alpha$以便恢复时长），并调用核心模块PVOC将信号的时间轴拉伸或压缩为原来的$Q$倍。在此基础上，对PVOC输出执行重采样操作，采样率变化因子设定为$\alpha$，这一步在将时长恢复至原始长度的同时，使频谱在频率轴上发生线性伸缩，实现目标的音高变化。随后在倒谱域对频谱包络实施频率轴伸缩，按参数$\beta$构造目标包络并进行频域比值加权，实现共振峰的显式调整/缩放。
+
+
+\item 相位声码器实现
+
+
+相位声码器模块实现遵循经典PVOC结构，并针对语音信号特性进行参数优化。为精细捕获相位演变并减少合成伪影，分析步长设为帧长的四分之一（约75\%
+重叠）。在pvsample子程序中，算法通过计算相邻帧相位差，并扣除由跳步产生的期望相位推进，得到瞬时频率偏差；在合成阶段于新的时间网格上进行相位累积，保持水平相位连续性，从而在改变时长$Q$的同时尽可能避免相位失真引起的“金属感”。
+与现成库函数不同，本实现从零搭建了 STFT 分析、相位累积与幅度插值等关键环节，便于复现实验细节。
+
+
+\item 共振峰调整模块设计
+
+
+变调（PVOC+重采样）会引起共振峰位置的整体漂移。为实现与目标音色类别一致的共振峰分布，系统采用倒谱同态方法在对数谱域估计平滑包络，并以频率轴伸缩的方式进行调整。具体做法为：分别从原始信号与变调后信号估计平滑对数包络$\mathrm{Env}_{\mathrm{orig}}(\omega)$与$\mathrm{Env}_{Y}(\omega)$，据此定义目标包络
+\end{enumerate}
+
+$$\mathrm{Env}_{\mathrm{target}}(\omega)=\mathrm{Env}_{\mathrm{orig}}\!\left(\frac{\omega}{\beta}\right),$$
+其中$\beta>1$表示共振峰整体上移、$\beta<1$表示整体下移。随后构造频域增益
+$$G(\omega)=\exp\big(\mathrm{Env}_{\mathrm{target}}(\omega)-\mathrm{Env}_{Y}(\omega)\big),$$
+并对变调后谱进行加权，实现对共振峰的显式缩放，使输出包络贴合$\beta$控制的目标分布。
+
+数值稳定性与参数策略
+在对数谱计算中引入幅度下限以抑制静音段导致的数值发散；STFT与ISTFT均采用Hann窗并配合重叠相加（OLA）进行增益归一化，消除窗引入的幅度调制；对$G(\omega)$可做适度平滑与限幅以提升稳健性。综合上述策略，底层实现形成“PVOC时间伸缩 + 重采样变调 + 倒谱包络缩放”的可控语音伪装流程。
+
+\subsection{主要流程图及说明}
+\FloatBarrier
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.5\linewidth]{系统流程图.png}
+\caption{系统总体流程图}
+\label{fig:系统流程图}
+\end{figure}
+\FloatBarrier
+
+\subsubsection{模块说明}
+
+
+阶段一：时频分析（Time-Frequency Analysis）
+
+
+STFT（短时傅里叶变换）：将一维时域语音$x[n]$转换为二维时频矩阵$X[m,k]$。系统采用Hann窗以降低频谱泄漏，并设定约75\%的帧重叠率（Hop Size = Frame Size / 4），为后续高精度相位预测与无痕重构奠定基础。
+
+
+阶段二：时间尺度修改（Time-Scale Modification, TSM）
+
+
+相位声码器（PVOC）：作为变调的前置步骤。模块接收由半音数$n$导出的时间尺度$Q$（工程上$Q\approx 1/\alpha$），在频域内对信号进行时间轴拉伸/压缩。其核心通过瞬时频率估计与相位累积，在改变信号时长$Q$的同时保持水平相位连续，避免传统插值带来的瞬态失真。
+
+
+阶段三：重采样变调（Resampling-based Pitch Shifting）
+
+
+重采样：该模块执行音高伸缩。将经过TSM的信号（时长为原始$Q$倍）按$\alpha$进行重采样，使频谱在频率轴上整体线性伸缩并将时长恢复至原始，从而实现目标的音高变化$F_0'=\alpha F_0$。
+
+
+阶段四：倒谱共振峰缩放（Cepstral Formant Scaling）
+
+
+倒谱域共振峰缩放：分别计算原始与变调信号的对数谱并取实倒谱，应用低通升析窗分离平滑包络。目标包络定义为$\mathrm{Env}_{\mathrm{target}}(\omega)=\mathrm{Env}_{\mathrm{orig}}(\omega/\beta)$，并据此构造频域增益$G(\omega)=\exp(\mathrm{Env}_{\mathrm{target}}-\mathrm{Env}_{Y})$，作用于变调后频谱以实现共振峰的整体伸缩与搬移。
+
+
+阶段五：信号重构（Signal Reconstruction）
+
+
+ISTFT（逆短时傅里叶变换）：将经包络缩放后的复数频谱转换回时域，并通过重叠相加（OLA）实现幅度增益归一化与帧间连续性，最终得到高保真度的输出$y[n]$，其基频与共振峰分别由$\alpha$与$\beta$解耦控制。
+
+\subsection{结果分析}
+\subsubsection{运行结果展示}
+在Matlab环境下，系统完成了语音录制、频谱分析、数字滤波降噪、基频变换（由$\alpha=2^{n/12}$控制）、共振峰缩放（由$\beta$控制）、以及慢录快放/快录慢放等模块。界面可视化实时展示时域波形、幅度谱/包络与基频轨迹，便于对比不同参数设置的效果。处理流程为：先通过PVOC实现时间尺度修改（$Q$），再经重采样完成音高伸缩并恢复时长（$\alpha$），最终在倒谱域对平滑包络实施频率轴伸缩，使输出包络逼近$\mathrm{Env}_{\mathrm{target}}(\omega)=\mathrm{Env}_{\mathrm{orig}}(\omega/\beta)$。不同模式（如男→女升调、女→童升调、女→男降调）通过设定$\alpha,\beta$获得相应的音高与音色转换。整体运行稳定，时频重构平滑自然。
+\begin{table}[htbp]
+  \centering % 使表格居中
+  \caption{常见变声方向参数对照表} % 表格标题
+  \label{table:voice_conversion} % 表格标签，用于交叉引用
+  \begin{tabular}{lcc} % 列格式：l-左对齐，c-居中对齐（此处共三列）
+    \toprule % 顶部粗线
+    变声方向 & semitones & $\beta$ \\
+    \midrule % 表中部线
+    女声→男声 & -5    & 0.75 \\
+    女声→童声 & +3    & 1.20 \\
+    男声→女声 & +2.5  & 1.15 \\
+    童声→女声 & -2.8  & 0.85 \\
+    \bottomrule % 底部粗线
+  \end{tabular}
+\end{table}
+
+图\ref{fig:gui}给出了系统图形界面与典型可视化输出，包括时域波形、频谱/包络与时频图等，能够较为方便快捷地对信号进行测试，并且能够输出滤波/变调/变速前后信号的时域/频域对比，较清晰地展示了信号变换的过程。
+图\ref{fig:filter}对比了带通滤波前后的频谱，展示了预处理对低频噪声与高频干扰的抑制；图\ref{fig:pitch-tsm}分别给出了变调结果与变速结果）；图\ref{fig:overall}给出了从输入到各处理阶段的总体对比展示，用于直观呈现系统工作流程在不同模块作用下的听感与可视化变化。上述结果与前文数学模型一致：变调通过$\alpha=2^{n/12}$实现频谱的线性伸缩并恢复时长，变速通过$Q$实现时长的拉伸/压缩且保持谱形一致性；在此基础上，系统进一步在倒谱域实现包络目标缩放（由$\beta$控制），用于音色迁移（该部分在后续详细量化与讨论）。
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.9\linewidth]{gui界面.png}
+\caption{系统GUI界面与可视化示例}
+\label{fig:gui}
+\end{figure}
+\begin{figure}[t]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{滤波前.png}
+\caption{滤波前：背景噪声与高频干扰较明显}
+\label{fig:filter_before}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{滤波后.png}
+\caption{滤波后：语音主能量带更突出，噪声受抑}
+\label{fig:filter_after}
+\end{subfigure}
+\caption{带通滤波预处理效果对比（频域视角）}
+\label{fig:filter}
+\end{figure}
+\begin{figure}[t]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{变调后.png}
+\caption{变调结果：频谱整体按比例伸缩且时长恢复}
+\label{fig:pitch_after}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{变速后.png}
+\caption{变速结果：时长改变而谱形基本保持}
+\label{fig:tsm_after}
+\end{subfigure}
+\caption{变调与变速效果}
+\label{fig:pitch-tsm}
+\end{figure}
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.95\linewidth]{总对比.png}
+\caption{总体对比视图}
+\label{fig:overall}
+\end{figure}
+
+
+\FloatBarrier
+\subsubsection{ 结果验证}
+本系统的多项功能通过频域与包络域对比得到验证，验证口径与数学模型一致：音高伸缩以$\alpha=2^{n/12}$为参照，包络伸缩以$\mathrm{Env}_{\mathrm{target}}(\omega)=\mathrm{Env}_{\mathrm{orig}}(\omega/\beta)$为参照。
+\begin{enumerate}
+    \item 变声效果验证
+    \begin{enumerate}
+
+    \item 基频搬移验证
+
+
+    在男→女或女→童的升调模式下，基频及相关谐波成分整体上移且幅度结构保持稳定；在女→男或童→女的降调模式下，基频整体下移。图示对比表明，输出频谱对$\alpha$的线性伸缩满足预期，体现时间—音高解耦流程的有效性。
+
+
+ \item 共振峰调整验证
+
+
+ 仅进行音高变换（仅$\alpha$）时，共振峰位置会随谱整体伸缩而偏离目标音色分布共振峰包络$\mathrm{Env}_{\mathrm{target}}$，并以对数谱比值加权实现共振峰的显式调整/缩放。变调前后
+ 图\ref{fig:共振峰轨迹}对比显示，倒谱包络伸缩法得到的共振峰轨迹（绿色点）更接近目标共振峰包络（黑色点），优于Matlab中的shiftPitch（紫色点），说明。
+\FloatBarrier
+
+ \begin{figure}[t]
+\centering
+\includegraphics[width=0.5\linewidth]{共振峰轨迹.png}
+\caption{共振峰轨迹对比}
+\label{fig:共振峰轨迹}
+\end{figure}
+
+
+\item 包络频域验证
+为展示变声前后频域结构的变化，绘制平滑对数包络的Bode图，重点关注500–3000 Hz主能量区间。结果显示，采用$\beta$控制的倒谱包络伸缩后，输出包络在关键频段更贴近$\mathrm{Env}_{\mathrm{target}}$，验证了共振峰调整的有效性。
+ \begin{figure}[t]
+\centering
+\includegraphics[width=0.9\linewidth]{包络.png}
+\caption{频域包络对比图}
+\label{fig:包络}
+\end{figure}
+\end{enumerate}
+\FloatBarrier
+\item{慢录快放与快录慢放验证}
+
+
+利用PVOC的时间尺度修改能力，分别演示TSM>1（时间拉伸）与TSM<1（时间压缩）两种模式。时域波形图显示，语音时长改变而谱形基本保持，说明PVOC的相位预测与重构有效，实现时间尺度与音高伸缩的解耦后变速。
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\linewidth]{快放.png}
+\label{fig:快放}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\linewidth]{慢放.png}
+\label{fig:慢放}
+\end{figure}
+
+
+\end{enumerate}
+\subsubsection{技术指标}
+为量化包络调整的有效性，分别对倒谱包络伸缩法（$\beta$控制）、未进行$\beta$缩放的基线，以及shiftPitch（Matlab中成熟的变调及校正函数）进行MSE、MAE、Correlation、SD四类指标计算，评价其与原信号的贴合度、形状一致性和稳定性，反映输出信号频谱包络与原信号在关键频带内的匹配质量。
+
+\begin{table}[htbp]
+  \centering
+  \caption{不同变声方法的性能指标对比}
+  \label{table:voice_performance}
+  \begin{tabular}{lcccc}
+    \toprule
+    指标 &  未调整共振峰 & 倒谱域缩放 &shiftPitch校正 &LPC缩放\\
+    \midrule
+    MSE   & 50.0163 & 34.7860 & 3.0464 & 67.8432\\
+    MAE   &  5.7169  & 4.0447  & 1.3817 & 5.432\\
+    Correlation &  0.8803 & 0.9286 & 0.9677 & 0.6753\\
+    SD    &  7.0722  & 5.8980  &1.7454& 8.0054\\
+    \bottomrule
+  \end{tabular}
+\end{table}
+倒谱域包络缩放相较未调整基线在幅度贴合度上明显提升，
+形状一致性提高，
+频带内误差波动减小，
+说明引入$\beta$的频率轴伸缩能够有效拉近输出包络与
+目标包络的距离；然而，与 shiftPitch 相比，
+当前实现仍存在差距（例如 MSE 3.05、MAE 1.38、Correlation 0.968、SD 1.75）
+，这一方面差异可能与算法目标差异有关：shiftPitch 的核心偏向“共振峰校正”（在保形与稳健性上更强），
+而倒谱域方法执行的是“共振峰缩放”（主动搬移峰位以实现音色迁移），在峰位重映射
+与幅度再分配过程中更容易产生绝对误差；另一方面也与实现细节相关，
+如倒谱阶数与窗长导致的包络过度/欠平滑、
+静音与弱能量帧的对数谱阈值与增益限幅设置等。
+综合图示与统计指标，结论是：倒谱域缩放在本研究设定的包络指标上优于未调整基线，说明其包络缩放效果比较好
+但低于成熟的 shiftPitch；然而在满足时间—音高解耦的前提下，β 控制为音色迁移提供了灵活手段，能够做到缩放共振峰，
+后续将从包络估计平滑度、边界插值与跨帧一致性等方面进一步优化。
+LPC缩放的效果最差，并且指标甚至高于未校正的指标，故前述分析评估不再考虑LPC校正。
+
+
+综合图示与统计指标，结果支持本文“时间与音高解耦控制”的设计主张：在满足音高变换的同时，通过包络频率轴伸缩实现目标类别的共振峰分布，使输出语音在自然度与可懂度上更符合预期。
+
+\newpage
+\section{AI协同设计分析}
+起始阶段，通过初步调研，我原计划直接调用 MATLAB 提供的 `shiftPitch` 函数作为变调模块。然而，功能验证过程中逐步暴露出该黑箱函数的扩展性不足：其内部时频参数（窗函数类型、帧长、重叠率）、相位连续性策略以及对谱包络的处理方式均不可配置，难以满足“仅改变基频、显式控制共振峰分布”的需求，也无法与后续设计的包络细粒度控制模块有效耦合。基于 AI 辅助的技术检索与文档分析，确认 `shiftPitch` 的底层实现属于相位声码器（Phase Vocoder, PVOC）技术路线，因此我们转向“自行复现 PVOC + 重采样 + 包络缩放”的开放式实现方案，便于在分析—合成链路中灵活引入倒谱或线性预测编码（LPC）等包络控制环节，从而实现可解释、可干预、可扩展的模块化系统设计。
+
+在复现 PVOC 过程中，围绕短时傅里叶变换（STFT）、相位展开、相位累积与重叠相加（OLA）重构等关键步骤，出现了多类工程实现与数值稳定性方面的挑战。其中印象最深的是窗函数与重叠区归一化问题：若分析窗与合成窗不匹配，或 OLA 的整体增益未正确归一化，会引入帧间幅度调制和听觉上的“脉冲感”。AI 建议统一采用 Hann 窗，并验证跳跃长度为窗长四分之一（hop = n/4）时所对应的能量补偿系数，从而有效抑制重构信号的能量起伏。
+
+在包络控制方案选择方面，AI 辅助的文献检索与分析表明，单纯改变激励源的基频会导致共振峰整体漂移，造成音色失真，因此需显式调整声道谱包络以保持音色自然。我们围绕“倒谱域共振峰缩放（同态处理）”和“LPC 极点重映射”两条技术路线进行实现与对比：倒谱法通过在对数谱域估计平滑包络 $Env(\omega)$，再通过频率轴伸缩实现目标包络分布，其目标包络定义为 $Env_{\text{target}}(\omega) = Env_{\text{orig}}(\omega/\beta)$，其中 $\beta > 1$ 表示共振峰上移，$\beta < 1$ 表示下移，增益函数构造为 $G(\omega) = \exp\left(Env_{\text{target}}(\omega) - Env_Y(\omega)\right)$；LPC 方法则通过建立全极点模型来估计声道响应，并对极点对应的角频率进行比例缩放或仿射变换，以实现共振峰的移动。在实现过程中，曾因关键词表述偏差将“倒谱缩放”误写为“倒谱校正”（即默认将包络恢复为原始分布，而非按 $\beta$ 进行可控缩放），经 AI 定位与建议，迅速将包络比计算公式由 $\exp(env_X - env_Y)$ 修正为 $\exp(env_{\text{target}} - env_Y)$，并新增频率轴缩放模块 $env_{\text{target}} = Env_{\text{orig}}(\omega/\beta)$，在保持原有倒谱估计与 Lifter 参数不变的前提下，以最小改动实现了共振峰的可控平移。此外，AI 还建议对增益函数 $G(\omega)$ 进行适度平滑与幅值限制，以缓解高 $\beta$ 值在高频段可能引起的增益尖峰与音色失真；在 LPC 方案中，AI 提示需关注模型阶数选择、预加重处理与稳定性约束（反射系数校验）等关键细节，以降低极点外逸导致的合成失真风险。
+
+在 MATLAB 程序编写过程中，由于本人主要编程经验集中于 Python，对 MATLAB 语法与功能接口不够熟悉，因而频繁出现语法错误与函数使用不当的情况。在此期间，我大量借助 AI 的代码调试与错误修正功能，将报错信息提交给 AI 进行实时分析，显著提升了程序开发效率与问题定位速度。
+
+最终，我们确定系统主体结构为“PVOC 时间伸缩 + 重采样变调 + 倒谱包络缩放”，并与“LPC 极点缩放”方案进行并行对比。该结构的理论依据在于：PVOC 能够在保持频率成分不变的条件下精确调节时间尺度，结合重采样可实现线性音高移动，同时维持相位连续性以降低金属伪影；倒谱同态方法在对数谱域利用低倒频率分量提取平滑包络，具备良好的抗噪性与全局平滑特性，频率轴重映射 $Env_{\text{target}}(\omega) = Env_{\text{orig}}(\omega/\beta)$ 作为业界广泛采用的共振峰移动手段，能够通过单一参数 $\beta$ 稳定控制音色类型；LPC 则提供了一种机理化的声道建模与参数化调控方式，有利于对比验证与误差溯源。综合主观听感、算法稳健性与实现复杂度，倒谱包络缩放方法在多数实验场景下表现出更平滑的谱包络匹配效果与更低的合成伪影。
+
+通过上述 AI 协同的设计与迭代过程，最终形成了一套结构清晰、参数可控、可解释性强的语音伪装处理技术路线，并在工程实现中显著降低了调试与纠错成本，提升了整体方案的复现性与扩展性。
+
+\section{总结与体会}
+
+这次工程设计作业让我把课堂上的信号处理知识真正用到问题上。我学会了先按‘基频’和‘共振峰’拆分任务，再分别选用合适的方法去处理：用PVOC和重采样做音高变换，用倒谱做包络伸缩。实践证明，合理的重叠率和相位处理能显著减少金属感，适度的阈值和增益平滑能提升稳定性。相比一开始直接调用黑箱函数，我现在更清楚每个模块在做什么、参数如何影响结果，也更能解释成功与失败背后的原因。
+与此同步，我也从倒谱与 LPC 两种方法的并行实现中学到了如何在工程层面权衡“包络平滑性、实现复杂度与鲁棒性”，并用客观指标与听感对照来支撑方案选择。
+
+AI在三个方面帮了我：第一，帮我把黑箱函数的原理摸清楚，让我敢于自己搭建PVOC和包络模块；第二，在调试时快速定位问题，很多看似玄学的失真，其实是参数或边界处理不当；第三，在我只改基频导致音色变差时，提供了‘包络伸缩’这条简单可控的改法。结果上，我的实现比未校正的基线更接近目标包络，但与shiftPitch的成熟方案仍有差距。承认差距、找准原因，比盲目“挽尊”更重要。下一步我会重点改进包络估计的平滑与一致性、增益处理的稳健性，并完善主观听感与客观指标的联合评估，把系统做得更稳、更好用。
+
+总体而言，这次收获最大的不是单纯完成了一个功能齐全的系统，而是掌握了把看似复杂的音频处理问题拆解为可操作的信号处理模块的方法论：先明确物理模型与信号结构，再选取合适的数学工具与工程策略，最后用规范的评估指标与可视化验证结果。生成式人工智能在提供知识背景、给出合理的设计备选、协助定位与修复编码问题方面起到了显著的增效作用，但关键的原理理解、参数取舍与结果判读仍然需要我自身的分析与判断。后续工作将围绕实时性优化（低延时 PVOC 与块处理）、主观听感评测体系完善（结合客观包络误差与主观评分）、更丰富的目标音色建模（基于语料统计的共振峰分布）等方向继续推进，使系统在实用性与可解释性方面进一步提升。
+
+
+
+\begin{thebibliography}{9}
+
+\bibitem{matlab_lpc} 
+MathWorks. \textit{Formant Estimation with LPC Coefficients}. 
+2024b Documentation. 
+\url{https://ww2.mathworks.cn/help/releases/R2024b/audio/ref/shiftpitch.html}
+
+\bibitem{praat_lpc} 
+Boersma, P. \& Weenink, D. \textit{Praat: doing phonetics by computer}. 
+Version 6.3.09. 
+\url{http://www.praat.org/}
+
+\bibitem{praat_github} 
+Praat Development Team. \textit{praat/praat.github.io}. 
+GitHub repository. Commit 237a309. 
+\url{https://github.com/praat/praat.github.io/tree/237a309/LPC}
+
+\bibitem{deepwiki_praat} 
+DeepWiki. \textit{Praat LPC and Formant Analysis}. 
+Last indexed: 13 September 2025. 
+\url{https://deepwiki.org/praat/praat/wiki/LPC-and-Formant-Analysis}
+
+\bibitem{ellis2002} 
+Ellis, D. P. W. \textit{A Phase Vocoder in Matlab}. 
+Technical Report, Columbia University, 2002.
+\url{http://www.ee.columbia.edu/~dpwe/resources/matlab/pvoc/}
+
+\bibitem{matlab_envelope} 
+MathWorks. \textit{Envelope Extraction - MATLAB \& Simulink}. 
+2024b Documentation.
+\url{https://ww2.mathworks.cn/help/signal/ug/envelope-extraction.html}
+
+\bibitem{matlab_phasevocoder} 
+MathWorks. \textit{Pitch Shifting and Time Dilation Using a Phase Vocoder in MATLAB}. 
+2024b Documentation.
+\url{https://ww2.mathworks.cn/help/audio/ug/pitch-shifting-and-time-dilation-using-a-phase-vocoder-in-matlab.html}
+
+\end{thebibliography}
+
+
+\newpage
+% 在文档正文末尾（参考文献之前）添加附录
+\appendix
+\section{MATLAB 代码实现}
+\label{app:matlab_code}
+
+本章节提供了论文中使用的所有MATLAB源代码。代码按功能模块组织，包括主程序、核心算法、分析工具和测试演示。
+
+\subsection{主程序文件}
+\label{app:main_programs}
+
+\lstinputlisting[
+    style=matlabstyle,
+    caption={语音信号处理系统主程序 - 集成录音、频谱分析、滤波、变声和时间拉伸功能},
+    label=code:main_voice_processing
+]{\codefolder/main_voice_processing.m}
+
+\subsection{核心算法实现}
+\label{app:core_algorithms}
+
+\subsubsection{相位声码器时间拉伸}
+\lstinputlisting[
+    style=matlabstyle,
+    caption={相位声码器时间拉伸算法实现},
+    label=code:pvoc_phase_vocoder
+]{\codefolder/pvoc_phase_vocoder.m}
+
+\subsubsection{STFT频谱插值}
+\lstinputlisting[
+    style=matlabstyle,
+    caption={STFT数组插值算法（相位声码器核心）},
+    label=code:pvsample_stft_interpolation
+]{\codefolder/pvsample_stft_interpolation.m}
+
+\subsubsection{完整变调功能}
+\lstinputlisting[
+    style=matlabstyle,
+    caption={变调不变速完整实现},
+    label=code:pitch_shift_complete
+]{\codefolder/pitch_shift_complete.m}
+
+\subsubsection{共振峰校正方法}
+\lstinputlisting[
+    style=matlabstyle,
+    caption={共振峰校正主函数（支持LPC和倒谱域方法）},
+    label=code:formant_correction_main
+]{\codefolder/formant_correction_main.m}
+
+\subsection{分析与可视化工具}
+\label{app:analysis_tools}
+
+\subsubsection{共振峰对比分析}
+\lstinputlisting[
+    style=matlabstyle,
+    caption={共振峰校正效果对比可视化},
+    label=code:plot_formant_comparison_demo
+]{\codefolder/plot_formant_comparison_demo.m}
+
+\subsubsection{LPC共振峰估计}
+\lstinputlisting[
+    style=matlabstyle,
+    caption={基于LPC的共振峰频率估计函数},
+    label=code:formant_lpc
+]{\codefolder/formant_lpc.m}
+
+\subsection{测试与演示程序}
+\label{app:test_demos}
+
+\subsubsection{变调共振峰分析演示}
+\lstinputlisting[
+    style=matlabstyle,
+    caption={变调过程中的共振峰特性分析演示},
+    label=code:test_pitch_shift_formants_demo
+]{\codefolder/test_pitch_shift_formants_demo.m}
+
+\subsubsection{倒谱域校正演示}
+\lstinputlisting[
+    style=matlabstyle,
+    caption={倒谱域共振峰校正方法演示},
+    label=code:test_cepstral_correction_demo
+]{\codefolder/test_cepstral_correction_demo.m}
+
+\section{代码使用说明}
+\label{app:code_usage}
+
+本附录包含了语音信号处理系统的完整MATLAB实现。各模块功能如下：
+
+\begin{itemize}
+    \item \textbf{主程序（\ref{code:main_voice_processing}）}：系统入口，集成所有功能
+    \item \textbf{相位声码器（\ref{code:pvoc_phase_vocoder}）}：实现时间尺度修改
+    \item \textbf{变调算法（\ref{code:pitch_shift_complete}）}：实现音高变换
+    \item \textbf{共振峰校正（\ref{code:formant_correction_main}）}：LPC与倒谱域方法
+    \item \textbf{分析工具}：提供可视化与性能评估
+\end{itemize}
+
+所有代码均在MATLAB R2024b环境下测试通过，需安装Audio Toolbox。
+
+\end{document}
+
